@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>词库 学生版 Vocab Bank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@500;700;900&display=swap">
+<style>
+  :root{
+    --ground:#FBF4EE; --surface:#FFFFFF; --ink:#26201C; --muted:#8A7E74;
+    --accent:#9A1728; --accent-soft:#f6e4e2;
+    --c2:#2F5C8F; --c2-soft:#e5edf6; --c3:#1F6F5C; --c3-soft:#e4f0ec; --both:#8A6D1F; --both-soft:#f2e9d2;
+    --gold:#C79A3B; --line:#EADFD4; --shadow:rgba(60,40,30,.14);
+    --cn:"Noto Sans SC"; --display:"Baloo 2"; --body:"Nunito Sans";
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --ground:#191512; --surface:#241E19; --ink:#F3EAE0; --muted:#A99C90;
+    --accent:#E4677A; --accent-soft:#3a2225;
+    --c2:#78A2D6; --c2-soft:#22303f; --c3:#5FB79E; --c3-soft:#1e332c; --both:#D8B863; --both-soft:#38301c;
+    --gold:#DCB65F; --line:#39302a; --shadow:rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --ground:#191512; --surface:#241E19; --ink:#F3EAE0; --muted:#A99C90;
+    --accent:#E4677A; --accent-soft:#3a2225;
+    --c2:#78A2D6; --c2-soft:#22303f; --c3:#5FB79E; --c3-soft:#1e332c; --both:#D8B863; --both-soft:#38301c;
+    --gold:#DCB65F; --line:#39302a; --shadow:rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body),system-ui,sans-serif;line-height:1.5;
+    -webkit-font-smoothing:antialiased;padding:clamp(12px,2.5vw,28px)}
+  .wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(12px,2vw,18px)}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  h1{font-family:var(--display);font-weight:700;margin:0;font-size:clamp(1.7rem,4vw,2.5rem);color:var(--accent)}
+  .tag{font-size:.9rem;color:var(--muted)}
+  .status{font-size:.8rem;color:var(--muted)}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:10px 12px;box-shadow:0 3px 14px var(--shadow)}
+  .toolbar select,.toolbar input[type=text]{font-family:var(--body);font-size:1rem;padding:.45em .7em;border-radius:10px;
+    border:1.5px solid var(--line);background:var(--ground);color:var(--ink)}
+  .toolbar input[type=text]{flex:1;min-width:120px}
+  .spacer{flex:1}
+  .btn{font-family:var(--display);font-weight:600;font-size:1rem;padding:.5em 1.1em;border-radius:12px;border:1.5px solid var(--line);
+    background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:.4em}
+  .btn:hover{border-color:var(--accent);background:var(--accent-soft)} .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)} .btn.primary:hover{filter:brightness(1.06);background:var(--accent)}
+  .count{font-size:.85rem;color:var(--muted)}
+
+  /* add-your-own */
+  details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px var(--shadow)}
+  details.teacher>summary{cursor:pointer;padding:12px 14px;font-family:var(--display);font-weight:600;list-style:none;display:flex;gap:.5em;align-items:center}
+  details.teacher>summary::-webkit-details-marker{display:none}
+  details.teacher>summary::before{content:"➕";}
+  .addrow{padding:0 14px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+  .fld{display:flex;flex-direction:column;gap:4px}
+  .fld label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+  .fld input,.fld select{font-family:var(--body);font-size:1rem;padding:.45em .6em;border-radius:10px;border:1.5px solid var(--line);background:var(--ground);color:var(--ink)}
+  .fld.hz input{font-family:var(--cn);font-size:1.2rem;width:7.5em}
+  .fld.py input{width:8em} .fld.mn input{width:12em;min-width:8em} .fld.ls input{width:4.5em}
+  .addnote{padding:0 14px 12px;font-size:.82rem;color:var(--muted)}
+
+  /* bank grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+  .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;
+    box-shadow:0 2px 10px var(--shadow);display:flex;flex-direction:column;gap:2px}
+  .card.mine{border-color:var(--gold);border-style:dashed}
+  .card .hz{font-family:var(--cn);font-weight:700;font-size:2.1rem;line-height:1.15}
+  .card .py{font-style:italic;color:var(--accent);font-size:1.05rem}
+  .card .mn{color:var(--muted);font-size:.95rem}
+  .chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .chip{font-family:var(--display);font-weight:600;font-size:.72rem;padding:.15em .6em;border-radius:8px}
+  .chip.c2{background:var(--c2-soft);color:var(--c2)} .chip.c3{background:var(--c3-soft);color:var(--c3)} .chip.both{background:var(--both-soft);color:var(--both)}
+  .chip.ls{background:var(--ground);color:var(--muted);border:1px solid var(--line)}
+  .chip.mine{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+  .del{position:absolute;top:8px;right:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:1.05rem;opacity:0;transition:opacity .15s;line-height:1;padding:2px 5px;border-radius:8px}
+  .card:hover .del{opacity:.7} .del:hover{opacity:1;background:var(--accent-soft);color:var(--accent)}
+  .empty{color:var(--muted);text-align:center;padding:40px 10px;font-size:1.05rem}
+  .notice{background:var(--accent-soft);color:var(--accent);border-radius:12px;padding:10px 14px;font-size:.9rem}
+
+  /* warm-up overlay */
+  [hidden]{display:none!important}
+  #warm{position:fixed;inset:0;background:var(--ground);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center}
+  #warm .wchip{position:absolute;top:20px;left:20px;font-family:var(--display);font-weight:700;font-size:1.1rem;padding:.25em .85em;border-radius:12px;color:#fff}
+  #warm .wchip.c2{background:var(--c2)} #warm .wchip.c3{background:var(--c3)} #warm .wchip.both{background:var(--both)}
+  #warm .wcount{position:absolute;top:22px;right:22px;color:var(--muted);font-variant-numeric:tabular-nums}
+  #warm .wclose{position:absolute;bottom:22px;right:22px}
+  #warm .wprompt{font-size:.95rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  #warm .whz{font-family:var(--cn);font-weight:900;line-height:1.05;font-size:clamp(5rem,20vw,12rem)}
+  #warm .wans{display:flex;flex-direction:column;gap:.1em;opacity:0;transform:translateY(8px);transition:.25s}
+  #warm .wans.show{opacity:1;transform:none}
+  #warm .wpy{font-style:italic;font-weight:600;font-size:clamp(1.6rem,4.5vw,2.8rem);color:var(--accent)}
+  #warm .wmn{font-size:clamp(1.1rem,2.8vw,1.7rem);color:var(--muted)}
+  #warm .wbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:10px 18px;border-radius:12px;font-size:.9rem;z-index:30;opacity:0;transition:.2s;pointer-events:none}
+  #toast.show{opacity:1}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>词库 Vocab Bank</h1>
+    <div class="tag">中文二 + 三 · 学生版 · 复习、课前随机抽</div>
+  </header>
+
+  <div id="note" class="notice">
+    老师教过的词都在这里。老师加新词以后，页面更新才会出现。你自己加的词只存在你这个浏览器，别人看不到。<br>
+    This is the vocabulary taught so far. New words appear here after your teacher updates the page. Words you add stay in your own browser only.
+  </div>
+
+  <details class="teacher" id="teacher">
+    <summary>加词 Add your own word</summary>
+    <div class="addrow">
+      <div class="fld hz"><label>汉字</label><input id="i_hz" autocomplete="off"></div>
+      <div class="fld py"><label>拼音 pīnyīn</label><input id="i_py" autocomplete="off"></div>
+      <div class="fld mn"><label>意思 meaning</label><input id="i_mn" autocomplete="off"></div>
+      <div class="fld"><label>级别 level</label><select id="i_lv"><option value="c2">中文二</option><option value="c3">中文三</option><option value="both">通用 both</option></select></div>
+      <div class="fld ls"><label>课 lesson</label><input id="i_ls" value="L5" autocomplete="off"></div>
+      <button class="btn primary" id="addBtn">加入 Add</button>
+      <button class="btn" id="resetBtn" title="删掉你加的词、恢复老师的词表">↺ 复原 Reset to class set</button>
+    </div>
+    <div class="addnote">你加的词有金色虚线边框，只存在这个浏览器。 Your words have a gold dashed border and live only in this browser.</div>
+  </details>
+
+  <div class="toolbar">
+    <select id="f_level"><option value="all">全部 all levels</option><option value="c2">中文二</option><option value="c3">中文三</option><option value="both">通用</option></select>
+    <select id="f_lesson"><option value="all">全部 all lessons</option></select>
+    <input type="text" id="f_search" placeholder="搜索 search 汉字 / pinyin / meaning">
+    <span class="spacer"></span>
+    <span class="count" id="count"></span>
+    <select id="warmN"><option value="5">5</option><option value="8" selected>8</option><option value="12">12</option><option value="16">16</option></select>
+    <button class="btn primary" id="warmBtn">🎲 课前复习 Warm-up</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="emptyMsg" hidden>还没有词。No words yet.</div>
+</div>
+
+<div id="warm" hidden>
+  <div class="wchip" id="w_chip"></div>
+  <div class="wcount" id="w_count"></div>
+  <div class="wprompt" id="w_prompt">读一读 read it aloud</div>
+  <div class="whz" id="w_hz"></div>
+  <div class="wans" id="w_ans"></div>
+  <div class="wbtns">
+    <button class="btn primary" id="w_reveal">👀 揭晓 Reveal</button>
+    <button class="btn" id="w_next">下一个 Next ›</button>
+    <button class="btn" id="w_shuffle">🔀 重抽 Reshuffle</button>
+  </div>
+  <button class="btn wclose" id="w_close">✕ 关闭 Close</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const LEVELS={c2:["中文二","c2"],c3:["中文三","c3"],both:["通用","both"]};
+
+// ── SEED: the taught vocabulary, pulled from the live 词库 bank (2026-09-08).
+//    Baked into the page so students always get the current set with no sign-in.
+//    To refresh after teaching new words, update this list and re-publish.
+//    {id, hz, py, mn, level, lesson}
+const SEED=[
+  // 中文二 · L5 (介绍)
+  {id:"w-c2-01",hz:"朋友",py:"péngyou",mn:"friend",level:"c2",lesson:"L5"},
+  {id:"w-c2-02",hz:"介绍",py:"jièshào",mn:"to introduce",level:"c2",lesson:"L5"},
+  {id:"w-c2-03",hz:"一下",py:"yíxià",mn:"(V + 一下) briefly, a bit",level:"c2",lesson:"L5"},
+  {id:"w-c2-04",hz:"有",py:"yǒu",mn:"to have; there is/are",level:"c2",lesson:"L5"},
+  {id:"w-c2-05",hz:"没有",py:"méiyǒu",mn:"to not have; there isn't/aren't",level:"c2",lesson:"L5"},
+  {id:"w-c2-06",hz:"都",py:"dōu",mn:"all, both",level:"c2",lesson:"L5"},
+  {id:"w-c2-07",hz:"跟",py:"gēn",mn:"with",level:"c2",lesson:"L5"},
+  {id:"w-c2-08",hz:"室友",py:"shìyǒu",mn:"roommate",level:"c2",lesson:"L5"},
+  {id:"w-c2-09",hz:"男朋友",py:"nánpéngyou",mn:"boyfriend",level:"c2",lesson:"L5"},
+  {id:"w-c2-10",hz:"女朋友",py:"nǚpéngyou",mn:"girlfriend",level:"c2",lesson:"L5"},
+  {id:"w-c2-11",hz:"认识",py:"rènshi",mn:"to know, recognize",level:"c2",lesson:"L5"},
+  {id:"w-c2-12",hz:"很高兴",py:"hěn gāoxìng",mn:"glad, pleased",level:"c2",lesson:"L5"},
+  {id:"w-c2-13",hz:"猫",py:"māo",mn:"cat",level:"c2",lesson:"L5"},
+  {id:"w-c2-14",hz:"狗",py:"gǒu",mn:"dog",level:"c2",lesson:"L5"},
+  {id:"w-c2-15",hz:"兔子",py:"tùzi",mn:"rabbit",level:"c2",lesson:"L5"},
+  {id:"w-c2-16",hz:"名字",py:"míngzi",mn:"name",level:"c2",lesson:"L5"},
+  {id:"w-c2-17",hz:"我来介绍一下",py:"wǒ lái jièshào yíxià",mn:"let me introduce",level:"c2",lesson:"L5"},
+  {id:"w-c2-18",hz:"很高兴认识你",py:"hěn gāoxìng rènshi nǐ",mn:"nice to meet you",level:"c2",lesson:"L5"},
+  {id:"t-1",hz:"也",py:"yě",mn:"also, too",level:"c2",lesson:"L5"},
+  {id:"t-2",hz:"也都",py:"yě dōu",mn:"also all (也 before 都)",level:"c2",lesson:"L5"},
+  // 中文三 · L9 (打电话)
+  {id:"w-c3-19",hz:"给",py:"gěi",mn:"to give; for",level:"c3",lesson:"L9"},
+  {id:"w-c3-20",hz:"看",py:"kàn",mn:"to look, watch",level:"c3",lesson:"L9"},
+  {id:"w-c3-21",hz:"要",py:"yào",mn:"to want",level:"c3",lesson:"L9"},
+  {id:"w-c3-22",hz:"做",py:"zuò",mn:"to do, make",level:"c3",lesson:"L9"},
+  {id:"w-c3-23",hz:"忙",py:"máng",mn:"busy",level:"c3",lesson:"L9"},
+  {id:"w-c3-24",hz:"喂",py:"wéi",mn:"hello (on the phone)",level:"c3",lesson:"L9"},
+  {id:"w-c3-25",hz:"请问",py:"qǐngwèn",mn:"may I ask…",level:"c3",lesson:"L9"},
+  {id:"w-c3-26",hz:"在",py:"zài",mn:"at; (doing) -ing",level:"c3",lesson:"L9"},
+  {id:"w-c3-27",hz:"就是",py:"jiùshì",mn:"(it's) me; speaking",level:"c3",lesson:"L9"},
+  {id:"w-c3-28",hz:"电视",py:"diànshì",mn:"TV",level:"c3",lesson:"L9"},
+  {id:"w-c3-29",hz:"手机",py:"shǒujī",mn:"cell phone",level:"c3",lesson:"L9"},
+  {id:"w-c3-30",hz:"玩儿",py:"wánr",mn:"to play, hang out",level:"c3",lesson:"L9"},
+  {id:"w-c3-31",hz:"呢",py:"ne",mn:"(particle: softens / ongoing)",level:"c3",lesson:"L9"},
+  {id:"w-c3-32",hz:"家",py:"jiā",mn:"home",level:"c3",lesson:"L9"},
+  {id:"w-c3-33",hz:"房间",py:"fángjiān",mn:"room",level:"c3",lesson:"L9"},
+  {id:"w-c3-34",hz:"外面",py:"wàimiàn",mn:"outside",level:"c3",lesson:"L9"},
+  {id:"w-c3-35",hz:"厕所",py:"cèsuǒ",mn:"bathroom",level:"c3",lesson:"L9"},
+  {id:"w-c3-36",hz:"逛街",py:"guàngjiē",mn:"to stroll, go shopping",level:"c3",lesson:"L9"},
+  {id:"w-c3-37",hz:"吃饭",py:"chīfàn",mn:"to eat (a meal)",level:"c3",lesson:"L9"},
+  {id:"w-c3-38",hz:"学校",py:"xuéxiào",mn:"school",level:"c3",lesson:"L9"},
+  {id:"w-c3-39",hz:"工作",py:"gōngzuò",mn:"to work; work, job",level:"c3",lesson:"L9"},
+  {id:"w-c3-40",hz:"看书",py:"kànshū",mn:"to read (a book)",level:"c3",lesson:"L9"},
+  {id:"w-c3-41",hz:"打电话",py:"dǎ diànhuà",mn:"to make a phone call",level:"c3",lesson:"L9"},
+  {id:"w-c3-42",hz:"看电视",py:"kàn diànshì",mn:"to watch TV",level:"c3",lesson:"L9"},
+  {id:"w-c3-43",hz:"请等一下",py:"qǐng děng yíxià",mn:"please wait a moment",level:"c3",lesson:"L9"},
+  {id:"w-c3-44",hz:"你在做什么",py:"nǐ zài zuò shénme",mn:"what are you doing?",level:"c3",lesson:"L9"},
+  {id:"t-3",hz:"什么时候",py:"shénme shíhou",mn:"when",level:"c3",lesson:"L9"},
+  {id:"t-4",hz:"回来",py:"huílái",mn:"to come back",level:"c3",lesson:"L9"},
+  {id:"t-5",hz:"以后",py:"yǐhòu",mn:"after, afterwards",level:"c3",lesson:"L9"},
+  {id:"t-6",hz:"今天晚上",py:"jīntiān wǎnshang",mn:"tonight",level:"c3",lesson:"L9"},
+  {id:"t-7",hz:"留言",py:"liúyán",mn:"to leave a message",level:"c3",lesson:"L9"},
+  {id:"t-8",hz:"不客气",py:"bú kèqi",mn:"you're welcome",level:"c3",lesson:"L9"},
+  // 课堂用语 · classroom language (通用)
+  {id:"cl-1",hz:"加油",py:"jiāyóu",mn:"Go! / Keep going!",level:"both",lesson:"课堂用语"},
+  {id:"cl-2",hz:"好厉害",py:"hǎo lìhai",mn:"So impressive!",level:"both",lesson:"课堂用语"},
+  {id:"cl-3",hz:"跟我说",py:"gēn wǒ shuō",mn:"Say it after me.",level:"both",lesson:"课堂用语"},
+  {id:"cl-4",hz:"问他 / 问她",py:"wèn tā",mn:"Ask him / Ask her.",level:"both",lesson:"课堂用语"},
+  {id:"cl-5",hz:"什么是…",py:"shénme shì…",mn:"What is…? / What does … mean?",level:"both",lesson:"课堂用语"},
+  {id:"cl-6",hz:"怎么样",py:"zěnmeyàng",mn:"How about it? / What do you think?",level:"both",lesson:"课堂用语"},
+  {id:"cl-7",hz:"我不知道",py:"wǒ bù zhīdào",mn:"I don't know.",level:"both",lesson:"课堂用语"},
+  {id:"cl-8",hz:"中文课上不可以说英文",py:"Zhōngwén kè shàng bù kěyǐ shuō Yīngwén",mn:"No English in Chinese class.",level:"both",lesson:"课堂用语"}
+];
+
+// ── per-browser state (localStorage) ──
+const LS_ADD="vb_added_v1", LS_HIDE="vb_hidden_v1";
+function loadLS(k,def){ try{const v=localStorage.getItem(k); return v?JSON.parse(v):def;}catch(e){return def;} }
+function saveLS(k,val){ try{localStorage.setItem(k,JSON.stringify(val));}catch(e){} }
+let added=loadLS(LS_ADD,[]);            // [{id,hz,py,mn,level,lesson}]
+let hidden=new Set(loadLS(LS_HIDE,[])); // seed ids the student hid
+
+let vocab=[];
+let filt={level:"all",lesson:"all",q:""};
+let warm={list:[],pos:0,revealed:false};
+
+function rebuild(){ vocab=[...SEED.filter(w=>!hidden.has(w.id)), ...added]; }
+
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),2200);}
+function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function isMine(id){return String(id).startsWith("my-");}
+
+function filtered(){
+  return vocab.filter(w=>{
+    if(filt.level!=="all" && w.level!==filt.level) return false;
+    if(filt.lesson!=="all" && (w.lesson||"")!==filt.lesson) return false;
+    if(filt.q){const q=filt.q.toLowerCase();
+      if(!((w.hz||"").includes(filt.q) || (w.py||"").toLowerCase().includes(q) || (w.mn||"").toLowerCase().includes(q))) return false;}
+    return true;
+  });
+}
+function lessonsList(){ return [...new Set(vocab.map(w=>w.lesson).filter(Boolean))].sort(); }
+
+function render(){
+  const sel=$("#f_lesson"), cur=sel.value;
+  const ls=lessonsList();
+  sel.innerHTML='<option value="all">全部 all lessons</option>'+ls.map(l=>`<option value="${esc(l)}">${esc(l)}</option>`).join("");
+  sel.value=ls.includes(cur)||cur==="all"?cur:"all";
+  const list=filtered();
+  $("#count").textContent=`${list.length} / ${vocab.length} 词`;
+  const grid=$("#grid");
+  grid.innerHTML=list.map(w=>{
+    const lv=LEVELS[w.level]||LEVELS.both;
+    const mine=isMine(w.id);
+    return `<div class="card${mine?" mine":""}">${mine?`<button class="del" data-id="${w.id}" title="删除 delete">✕</button>`:""}
+      <div class="hz">${esc(w.hz)}</div>
+      <div class="py">${esc(w.py||"")}</div>
+      <div class="mn">${esc(w.mn||"")}</div>
+      <div class="chips"><span class="chip ${lv[1]}">${lv[0]}</span>${w.lesson?`<span class="chip ls">${esc(w.lesson)}</span>`:""}${mine?`<span class="chip mine">我加的 mine</span>`:""}</div>
+    </div>`;
+  }).join("");
+  $("#emptyMsg").hidden=list.length>0;
+  grid.querySelectorAll(".del").forEach(b=>b.onclick=()=>delWord(b.dataset.id));
+}
+
+// ── add / delete (this browser only) ──
+function addWord(){
+  const hz=$("#i_hz").value.trim(); if(!hz){toast("请输入汉字 enter a character");return;}
+  const w={id:"my-"+Date.now()+"-"+Math.floor(Math.random()*1000), hz,
+    py:$("#i_py").value.trim(), mn:$("#i_mn").value.trim(),
+    level:$("#i_lv").value, lesson:$("#i_ls").value.trim()};
+  added.push(w); saveLS(LS_ADD,added);
+  $("#i_hz").value="";$("#i_py").value="";$("#i_mn").value=""; $("#i_hz").focus();
+  toast("加好了 ✓ added (只存你的浏览器)"); rebuild(); render();
+}
+function delWord(id){
+  const w=vocab.find(x=>x.id===id); if(!w) return;
+  if(!confirm("删除 delete “"+w.hz+"”?")) return;
+  if(isMine(id)){ added=added.filter(a=>a.id!==id); saveLS(LS_ADD,added); }
+  else { hidden.add(id); saveLS(LS_HIDE,[...hidden]); }
+  rebuild(); render();
+}
+function resetMine(){
+  if(!confirm("恢复老师的词表？会删掉你自己加的所有词。\nReset to the class set? This removes every word you added.")) return;
+  added=[]; hidden=new Set(); saveLS(LS_ADD,added); saveLS(LS_HIDE,[]);
+  rebuild(); render(); toast("已复原 ✓ reset to class set");
+}
+
+// ── warm-up ──
+function openWarm(){
+  const pool=filtered(); if(pool.length===0){toast("没有词可以练 · nothing to review");return;}
+  const n=Math.min(+$("#warmN").value, pool.length);
+  warm.list=shuffle(pool.slice()).slice(0,n); warm.pos=0; warm.revealed=false;
+  $("#warm").hidden=false; document.addEventListener("keydown",warmKeys); renderWarm();
+}
+function closeWarm(){ $("#warm").hidden=true; document.removeEventListener("keydown",warmKeys); }
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function renderWarm(){
+  const w=warm.list[warm.pos], lv=LEVELS[w.level]||LEVELS.both;
+  const chip=$("#w_chip"); chip.className="wchip "+lv[1]; chip.textContent=lv[0]+(w.lesson?" · "+w.lesson:"");
+  $("#w_count").textContent=(warm.pos+1)+" / "+warm.list.length;
+  $("#w_hz").textContent=w.hz;
+  $("#w_ans").innerHTML=`<div class="wpy">${esc(w.py||"—")}</div><div class="wmn">${esc(w.mn||"")}</div>`;
+  $("#w_ans").classList.toggle("show",warm.revealed);
+}
+function warmReveal(){warm.revealed=true;renderWarm();}
+function warmNext(){warm.pos=(warm.pos+1)%warm.list.length;warm.revealed=false;renderWarm();}
+function warmKeys(e){
+  if(e.key==="Escape")return closeWarm();
+  if(e.key===" "||e.key==="Enter"){e.preventDefault(); warm.revealed?warmNext():warmReveal();}
+  else if(e.key==="ArrowRight")warmNext();
+}
+
+// ── wire ──
+$("#f_level").onchange=e=>{filt.level=e.target.value;render();};
+$("#f_lesson").onchange=e=>{filt.lesson=e.target.value;render();};
+$("#f_search").oninput=e=>{filt.q=e.target.value.trim();render();};
+$("#addBtn").onclick=addWord;
+$("#resetBtn").onclick=resetMine;
+$("#i_hz").addEventListener("keydown",e=>{if(e.key==="Enter")addWord();});
+$("#i_mn").addEventListener("keydown",e=>{if(e.key==="Enter")addWord();});
+$("#warmBtn").onclick=openWarm;
+$("#w_reveal").onclick=warmReveal; $("#w_next").onclick=warmNext;
+$("#w_shuffle").onclick=()=>{warm.list=shuffle(warm.list);warm.pos=0;warm.revealed=false;renderWarm();};
+$("#w_close").onclick=closeWarm;
+
+rebuild(); render();
+</script>
+</body>
+</html>
