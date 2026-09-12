@@ -89,6 +89,8 @@
   #warm .wclose{position:absolute;bottom:22px;right:22px}
   #warm .wprompt{font-size:.95rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
   #warm .whz{font-family:var(--cn);font-weight:900;line-height:1.05;font-size:clamp(5rem,20vw,12rem)}
+  #warm .whz.en{font-family:var(--body);font-weight:800;line-height:1.2;font-size:clamp(1.8rem,6vw,4rem);max-width:18ch}
+  #warm .wans .wans-hz{font-family:var(--cn);font-weight:900;line-height:1.1;font-size:clamp(3rem,11vw,7rem)}
   #warm .wans{display:flex;flex-direction:column;gap:.1em;opacity:0;transform:translateY(8px);transition:.25s}
   #warm .wans.show{opacity:1;transform:none}
   #warm .wpy{font-style:italic;font-weight:600;font-size:clamp(1.6rem,4.5vw,2.8rem);color:var(--accent)}
@@ -132,6 +134,7 @@
     <input type="text" id="f_search" placeholder="搜索 search 汉字 / pinyin / meaning">
     <span class="spacer"></span>
     <span class="count" id="count"></span>
+    <select id="warmMode" title="复习方式 review mode"><option value="recognition">认字 recognition · 中→</option><option value="translation">翻译 translation · 英→</option></select>
     <select id="warmN"><option value="5">5</option><option value="8" selected>8</option><option value="12">12</option><option value="16">16</option></select>
     <button class="btn primary" id="warmBtn">🎲 课前复习 Warm-up</button>
   </div>
@@ -331,6 +334,7 @@ function resetMine(){
 function openWarm(){
   const pool=filtered(); if(pool.length===0){toast("没有词可以练 · nothing to review");return;}
   const n=Math.min(+$("#warmN").value, pool.length);
+  warm.mode=$("#warmMode").value; try{localStorage.setItem("vb_warmmode",warm.mode);}catch(e){}
   warm.list=shuffle(pool.slice()).slice(0,n); warm.pos=0; warm.revealed=false;
   $("#warm").hidden=false; document.addEventListener("keydown",warmKeys); renderWarm();
 }
@@ -340,8 +344,16 @@ function renderWarm(){
   const w=warm.list[warm.pos], lv=LEVELS[w.level]||LEVELS.both;
   const chip=$("#w_chip"); chip.className="wchip "+lv[1]; chip.textContent=lv[0]+(w.lesson?" · "+w.lesson:"");
   $("#w_count").textContent=(warm.pos+1)+" / "+warm.list.length;
-  $("#w_hz").textContent=w.hz;
-  $("#w_ans").innerHTML=`<div class="wpy">${esc(w.py||"—")}</div><div class="wmn">${esc(w.mn||"")}</div>`;
+  const hz=$("#w_hz");
+  if(warm.mode==="translation"){
+    $("#w_prompt").textContent="说中文 say it in Chinese";
+    hz.className="whz en"; hz.textContent=w.mn||"—";
+    $("#w_ans").innerHTML=`<div class="wans-hz">${esc(w.hz)}</div><div class="wpy">${esc(w.py||"")}</div>`;
+  }else{
+    $("#w_prompt").textContent="读一读 read it aloud";
+    hz.className="whz"; hz.textContent=w.hz;
+    $("#w_ans").innerHTML=`<div class="wpy">${esc(w.py||"—")}</div><div class="wmn">${esc(w.mn||"")}</div>`;
+  }
   $("#w_ans").classList.toggle("show",warm.revealed);
 }
 function warmReveal(){warm.revealed=true;renderWarm();}
@@ -364,6 +376,7 @@ $("#warmBtn").onclick=openWarm;
 $("#w_reveal").onclick=warmReveal; $("#w_next").onclick=warmNext;
 $("#w_shuffle").onclick=()=>{warm.list=shuffle(warm.list);warm.pos=0;warm.revealed=false;renderWarm();};
 $("#w_close").onclick=closeWarm;
+try{const m=localStorage.getItem("vb_warmmode"); if(m&&$("#warmMode")) $("#warmMode").value=m;}catch(e){}
 
 rebuild(); render();
 </script>
