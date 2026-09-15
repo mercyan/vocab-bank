@@ -344,17 +344,20 @@ function renderWarm(){
   const w=warm.list[warm.pos], lv=LEVELS[w.level]||LEVELS.both;
   const chip=$("#w_chip"); chip.className="wchip "+lv[1]; chip.textContent=lv[0]+(w.lesson?" · "+w.lesson:"");
   $("#w_count").textContent=(warm.pos+1)+" / "+warm.list.length;
-  const hz=$("#w_hz");
+  const hz=$("#w_hz"); let ansHTML;
   if(warm.mode==="translation"){
     $("#w_prompt").textContent="说中文 say it in Chinese";
     hz.className="whz en"; hz.textContent=w.mn||"—";
-    $("#w_ans").innerHTML=`<div class="wans-hz">${esc(w.hz)}</div><div class="wpy">${esc(w.py||"")}</div>`;
+    ansHTML=`<div class="wans-hz">${esc(w.hz)}</div><div class="wpy">${esc(w.py||"")}</div>`;
   }else{
     $("#w_prompt").textContent="读一读 read it aloud";
     hz.className="whz"; hz.textContent=w.hz;
-    $("#w_ans").innerHTML=`<div class="wpy">${esc(w.py||"—")}</div><div class="wmn">${esc(w.mn||"")}</div>`;
+    ansHTML=`<div class="wpy">${esc(w.py||"—")}</div><div class="wmn">${esc(w.mn||"")}</div>`;
   }
-  $("#w_ans").classList.toggle("show",warm.revealed);
+  const ans=$("#w_ans");
+  // Keep the answer out of the DOM until revealed, so it can never flash on Next.
+  if(warm.revealed){ ans.innerHTML=ansHTML; ans.classList.add("show"); }
+  else { ans.classList.remove("show"); ans.innerHTML=""; }
 }
 function warmReveal(){warm.revealed=true;renderWarm();}
 function warmNext(){warm.pos=(warm.pos+1)%warm.list.length;warm.revealed=false;renderWarm();}
