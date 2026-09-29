@@ -110,23 +110,9 @@
   </header>
 
   <div id="note" class="notice">
-    老师教过的词都在这里。老师加新词以后，页面更新才会出现。你自己加的词只存在你这个浏览器，别人看不到。<br>
-    This is the vocabulary taught so far. New words appear here after your teacher updates the page. Words you add stay in your own browser only.
+    老师教过的词都在这里。老师加新词以后，页面更新才会出现。<br>
+    This is the vocabulary taught so far. New words appear here after your teacher updates the page.
   </div>
-
-  <details class="teacher" id="teacher">
-    <summary>加词 Add your own word</summary>
-    <div class="addrow">
-      <div class="fld hz"><label>汉字</label><input id="i_hz" autocomplete="off"></div>
-      <div class="fld py"><label>拼音 pīnyīn</label><input id="i_py" autocomplete="off"></div>
-      <div class="fld mn"><label>意思 meaning</label><input id="i_mn" autocomplete="off"></div>
-      <div class="fld"><label>级别 level</label><select id="i_lv"><option value="c2">中文二</option><option value="c3">中文三</option><option value="both">通用 both</option></select></div>
-      <div class="fld ls"><label>课 lesson</label><input id="i_ls" value="L5" autocomplete="off"></div>
-      <button class="btn primary" id="addBtn">加入 Add</button>
-      <button class="btn" id="resetBtn" title="删掉你加的词、恢复老师的词表">↺ 复原 Reset to class set</button>
-    </div>
-    <div class="addnote">你加的词有金色虚线边框，只存在这个浏览器。 Your words have a gold dashed border and live only in this browser.</div>
-  </details>
 
   <div class="toolbar">
     <select id="f_level"><option value="all">全部 all levels</option><option value="c2">中文二</option><option value="c3">中文三</option><option value="both">通用</option></select>
@@ -378,7 +364,7 @@ let vocab=[];
 let filt={level:"all",week:"all",lesson:"all",q:""};
 let warm={list:[],pos:0,revealed:false};
 
-function rebuild(){ vocab=[...SEED.filter(w=>!hidden.has(w.id)), ...added]; }
+function rebuild(){ vocab=[...SEED]; }
 
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),2200);}
 function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
@@ -487,10 +473,6 @@ $("#f_level").onchange=e=>{filt.level=e.target.value;render();};
 $("#f_week").onchange=e=>{filt.week=e.target.value; if(filt.week!=="all") $("#warmN").value="all"; render();};
 $("#f_lesson").onchange=e=>{filt.lesson=e.target.value;render();};
 $("#f_search").oninput=e=>{filt.q=e.target.value.trim();render();};
-$("#addBtn").onclick=addWord;
-$("#resetBtn").onclick=resetMine;
-$("#i_hz").addEventListener("keydown",e=>{if(e.key==="Enter")addWord();});
-$("#i_mn").addEventListener("keydown",e=>{if(e.key==="Enter")addWord();});
 $("#warmBtn").onclick=openWarm;
 $("#w_reveal").onclick=warmReveal; $("#w_next").onclick=warmNext;
 $("#w_shuffle").onclick=()=>{warm.list=shuffle(warm.list);warm.pos=0;warm.revealed=false;renderWarm();};
