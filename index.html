@@ -150,7 +150,7 @@
 const $=s=>document.querySelector(s);
 const LEVELS={c2:["中文二","c2"],c3:["中文三","c3"],both:["通用","both"]};
 
-// ── SEED: the taught vocabulary, pulled from the live 词库 bank (2026-09-08); Wk5–7 slide vocab added 2026-09-29.
+// ── SEED: the taught vocabulary, pulled from the live 词库 bank (2026-09-08); Wk5–7 slide vocab added 2026-09-29; Wk7 L6/L10 review-sheet vocab added 2026-10-02.
 //    Baked into the page so students always get the current set with no sign-in.
 //    To refresh after teaching new words, update this list and re-publish.
 //    {id, hz, py, mn, level, lesson, wk}  wk = course week first taught (课堂用语 has none)
@@ -343,6 +343,37 @@ const SEED=[
   {id:"zqj-06",hz:"祝",py:"zhù",mn:"to wish",level:"both",lesson:"中秋节",wk:6},
   {id:"zqj-07",hz:"祝你中秋节快乐",py:"zhù nǐ Zhōngqiūjié kuàilè",mn:"happy Mid-Autumn Festival!",level:"both",lesson:"中秋节",wk:6},
   // 课堂用语 · classroom language (通用)
+  {id:"rv7-c2-01",hz:"从…来",py:"cóng … lái",mn:"come from",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-02",hz:"做什么",py:"zuò shénme",mn:"do what",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-03",hz:"上学",py:"shàngxué",mn:"go to school",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-04",hz:"哪个",py:"nǎge",mn:"which one",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-05",hz:"哪些",py:"nǎxiē",mn:"which ones",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-06",hz:"学生",py:"xuésheng",mn:"student",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-07",hz:"学校",py:"xuéxiào",mn:"school",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-08",hz:"几口人",py:"jǐ kǒu rén",mn:"how many people (in a family)",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-09",hz:"有没有",py:"yǒu méiyǒu",mn:"have or not? (question)",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-10",hz:"很爱",py:"hěn ài",mn:"to love very much",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-11",hz:"和",py:"hé",mn:"and (links nouns)",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-12",hz:"中国",py:"Zhōngguó",mn:"China",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-13",hz:"美国",py:"Měiguó",mn:"the U.S.",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-14",hz:"北京",py:"Běijīng",mn:"Beijing",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-15",hz:"本",py:"běn",mn:"measure word for books",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-16",hz:"书",py:"shū",mn:"book",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c2-17",hz:"圣塔菲",py:"Shèngtǎfēi",mn:"Santa Fe",level:"c2",lesson:"L6",wk:7},
+  {id:"rv7-c3-01",hz:"大学生活",py:"dàxué shēnghuó",mn:"college life",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-02",hz:"宿舍",py:"sùshè",mn:"dorm",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-03",hz:"常常",py:"chángcháng",mn:"often",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-04",hz:"星期一",py:"xīngqīyī",mn:"Monday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-05",hz:"星期二",py:"xīngqī'èr",mn:"Tuesday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-06",hz:"星期三",py:"xīngqīsān",mn:"Wednesday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-07",hz:"星期四",py:"xīngqīsì",mn:"Thursday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-08",hz:"星期五",py:"xīngqīwǔ",mn:"Friday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-09",hz:"星期六",py:"xīngqīliù",mn:"Saturday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-10",hz:"星期日",py:"xīngqīrì",mn:"Sunday",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-11",hz:"回",py:"huí",mn:"to go back",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-12",hz:"吃午饭",py:"chī wǔfàn",mn:"to eat lunch",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-13",hz:"有事儿",py:"yǒu shìr",mn:"to have something to do",level:"c3",lesson:"L10",wk:7},
+  {id:"rv7-c3-14",hz:"祝…快乐",py:"zhù … kuàilè",mn:"wish (someone) a happy …",level:"c3",lesson:"L10",wk:7},
   {id:"cl-1",hz:"加油",py:"jiāyóu",mn:"Go! / Keep going!",level:"both",lesson:"课堂用语"},
   {id:"cl-2",hz:"好厉害",py:"hǎo lìhai",mn:"So impressive!",level:"both",lesson:"课堂用语"},
   {id:"cl-3",hz:"跟我说",py:"gēn wǒ shuō",mn:"Say it after me.",level:"both",lesson:"课堂用语"},
