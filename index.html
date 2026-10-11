@@ -150,7 +150,7 @@
 const $=s=>document.querySelector(s);
 const LEVELS={c2:["中文二","c2"],c3:["中文三","c3"],both:["通用","both"]};
 
-// ── SEED: the taught vocabulary, pulled from the live 词库 bank (2026-09-08); Wk5–7 slide vocab added 2026-09-29; Wk7 L6/L10 review-sheet vocab added 2026-10-02.
+// ── SEED: the taught vocabulary, pulled from the live 词库 bank (2026-09-08); Wk5–7 slide vocab added 2026-09-29; Wk7 L6/L10 review-sheet vocab added 2026-10-02; Wk8–9 midterm review/oral vocab added 2026-10-11.
 //    Baked into the page so students always get the current set with no sign-in.
 //    To refresh after teaching new words, update this list and re-publish.
 //    {id, hz, py, mn, level, lesson, wk}  wk = course week first taught (课堂用语 has none)
@@ -334,6 +334,27 @@ const SEED=[
   {id:"w67-c3-35",hz:"差",py:"chà",mn:"to (the hour), e.g. 9:55",level:"c3",lesson:"L10",wk:7},
   {id:"w67-c3-36",hz:"就",py:"jiù",mn:"as early as, already (sooner than expected)",level:"c3",lesson:"L10",wk:7},
   {id:"w67-c3-37",hz:"才",py:"cái",mn:"not until (later than expected)",level:"c3",lesson:"L10",wk:7},
+  // Wk8–9 midterm review deck + oral review / cards (added 2026-10-11)
+  {id:"w8-c2-01",hz:"想起",py:"xiǎngqǐ",mn:"to think of, remember",level:"c2",lesson:"L5",wk:8},
+  {id:"w8-c2-02",hz:"帮助",py:"bāngzhù",mn:"to help",level:"c2",lesson:"L5",wk:8},
+  {id:"w8-c2-03",hz:"练习",py:"liànxí",mn:"to practice",level:"c2",lesson:"L5",wk:8},
+  {id:"w8-c2-04",hz:"上大学",py:"shàng dàxué",mn:"to go to college",level:"c2",lesson:"L6",wk:8},
+  {id:"w8-c2-05",hz:"工程",py:"gōngchéng",mn:"engineering",level:"c2",lesson:"L6",wk:8},
+  {id:"w8-c3-01",hz:"不行",py:"bù xíng",mn:"no good, doesn't work, can't",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-02",hz:"没关系",py:"méi guānxi",mn:"it's okay, no problem",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-03",hz:"开车",py:"kāichē",mn:"to drive",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-04",hz:"邀请",py:"yāoqǐng",mn:"to invite",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-05",hz:"拒绝",py:"jùjué",mn:"to decline, refuse",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-06",hz:"找借口",py:"zhǎo jièkǒu",mn:"to make an excuse",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-07",hz:"我就是",py:"wǒ jiù shì",mn:"speaking, this is me (on the phone)",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-08",hz:"电话",py:"diànhuà",mn:"phone; phone number",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-09",hz:"幺",py:"yāo",mn:"one (when reading phone numbers)",level:"c3",lesson:"L9",wk:8},
+  {id:"w8-c3-10",hz:"几点",py:"jǐ diǎn",mn:"what time?",level:"c3",lesson:"L10",wk:8},
+  {id:"w8-c3-11",hz:"功课",py:"gōngkè",mn:"homework, schoolwork",level:"c3",lesson:"L10",wk:8},
+  {id:"w8-c3-12",hz:"吃晚饭",py:"chī wǎnfàn",mn:"to eat dinner",level:"c3",lesson:"L10",wk:8},
+  {id:"w8-c3-13",hz:"累死了",py:"lèi sǐ le",mn:"so tired, exhausted",level:"c3",lesson:"L10",wk:8},
+  {id:"w8-c3-14",hz:"饿死了",py:"è sǐ le",mn:"starving",level:"c3",lesson:"L10",wk:8},
+  {id:"w8-c3-15",hz:"笑死了",py:"xiào sǐ le",mn:"so funny, dying of laughter",level:"c3",lesson:"L10",wk:8},
   // 中秋节 · Mid-Autumn Festival (通用, Week 6)
   {id:"zqj-01",hz:"中秋节",py:"Zhōngqiūjié",mn:"Mid-Autumn Festival",level:"both",lesson:"中秋节",wk:6},
   {id:"zqj-02",hz:"月饼",py:"yuèbǐng",mn:"mooncake",level:"both",lesson:"中秋节",wk:6},
@@ -381,7 +402,10 @@ const SEED=[
   {id:"cl-5",hz:"什么是…",py:"shénme shì…",mn:"What is…? / What does … mean?",level:"both",lesson:"课堂用语"},
   {id:"cl-6",hz:"怎么样",py:"zěnmeyàng",mn:"How about it? / What do you think?",level:"both",lesson:"课堂用语"},
   {id:"cl-7",hz:"我不知道",py:"wǒ bù zhīdào",mn:"I don't know.",level:"both",lesson:"课堂用语"},
-  {id:"cl-8",hz:"中文课上不可以说英文",py:"Zhōngwén kè shàng bù kěyǐ shuō Yīngwén",mn:"No English in Chinese class.",level:"both",lesson:"课堂用语"}
+  {id:"cl-8",hz:"中文课上不可以说英文",py:"Zhōngwén kè shàng bù kěyǐ shuō Yīngwén",mn:"No English in Chinese class.",level:"both",lesson:"课堂用语"},
+  {id:"cl-9",hz:"请再说一遍",py:"qǐng zài shuō yí biàn",mn:"Please say it again.",level:"both",lesson:"课堂用语"},
+  {id:"cl-10",hz:"请慢一点",py:"qǐng màn yìdiǎn",mn:"Please, slower.",level:"both",lesson:"课堂用语"},
+  {id:"cl-11",hz:"我不懂",py:"wǒ bù dǒng",mn:"I don't understand.",level:"both",lesson:"课堂用语"}
 ];
 
 // ── per-browser state (localStorage) ──
